@@ -1,0 +1,29 @@
+Example code for an Upgradeable contract using 'Proxy', 'Functional'  
+and a shared (inherrited) 'Storage' contracts.
+Developed using Truffle (in VSCode workspace)
+
+Notes:
+1) The 'Storage' is inherrited by both the 'Proxy' and the 'Functional' 
+contracts 
+2) The 'Storage' consists several type mappings that allow new variable(s)
+of each type to be defined as required (provided they're of one of the
+initally defined type mappings)
+3) The 'Functional' contract must NOT store any state variables of its own 
+(aside from those inherrited from the 'Storage' contract), otherwise the
+'Proxy' contracts memory (variables) will be overwritten when it makes
+delegatecalls to execute the 'Functional' contract's functions.
+4) The 'Proxy' contract holds its own state variable for the address of 
+the current 'functional' contract to be used
+5) The 'Proxy' contract has an upgrade function to set the current address
+of the 'functional' contract (in it's state variable).  This allows the  
+current 'Functional' contract to be replaced with another (updated) contract 
+(and associated functionality)
+6) The 'Proxy' contract has a fallback function (that receives all function  
+calls to it that don't exist in the Proxy contract).  This fallback
+function then makes a delegatedcall to the current 'Functional' contract,
+executing the corresponding 'Functional' contracts function in the scope of 
+the 'Proxy' contract (and thereby using the 'Proxy' contracts 'Storage' 
+variables).
+
+See the migration script for examples of how to replace (after the original
+deployment) one version of a 'Functional' contract with an updated version.
